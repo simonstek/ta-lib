@@ -99,7 +99,6 @@ TA_RetCode TA_Initialize( void )
     */
    memset( TA_Globals, 0, sizeof( TA_LibcPriv ) );
    TA_Globals->magicNb = TA_LIBC_PRIV_MAGIC_NB;
-    TA_Globals->compatibility = TA_COMPATIBILITY_METASTOCK;
 
 #ifdef TA_LIB_PRO
       /* Section for code distributed with TA-Lib Pro only. */
