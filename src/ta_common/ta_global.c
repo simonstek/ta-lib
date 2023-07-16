@@ -63,6 +63,7 @@
 #include "ta_magic_nb.h"
 #include "ta_global.h"
 #include "ta_func.h"
+#include "ta_defs.h"
 
 #ifdef TA_LIB_PRO
 /* Section for code distributed with TA-Lib Pro only. */
@@ -77,7 +78,7 @@
 /**** Global variables definitions.    ****/
 
 /* The entry point for all globals */
-TA_LibcPriv ta_theGlobals = {0,{{0,0,0}},0,0,0,0,(TA_Compatibility)1,{0},{{(TA_CandleSettingType)0,(TA_RangeType)0,0,0}}};
+TA_LibcPriv ta_theGlobals = {0,{{0,0,0}},0,0,0,0,(TA_Compatibility)0,{0},{{(TA_CandleSettingType)0,(TA_RangeType)0,0,0}}};
 
 TA_LibcPriv *TA_Globals = &ta_theGlobals;
 
@@ -97,7 +98,8 @@ TA_RetCode TA_Initialize( void )
     * variables of all other modules...
     */
    memset( TA_Globals, 0, sizeof( TA_LibcPriv ) );
-   TA_Globals->magicNb = TA_LIBC_PRIV_MAGIC_NB;	  
+   TA_Globals->magicNb = TA_LIBC_PRIV_MAGIC_NB;
+    TA_Globals->compatibility = TA_COMPATIBILITY_METASTOCK;
 
 #ifdef TA_LIB_PRO
       /* Section for code distributed with TA-Lib Pro only. */
