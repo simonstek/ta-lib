@@ -1,5 +1,13 @@
 # TA-Lib - Technical Analysis Library
-GitHub repository is now the official home for TA-Lib
+How to generate configure from configure.ac? Steps:
 
-## What's next for 2023?
-The SourceForge SVN is to be deprecated, the ta-lib.org and tadoc.org websites will be salvaged and consolidated here.
+```
+sudo libtoolize --force
+sudo aclocal
+sudo autoheader
+sudo automake --force-missing --add-missing
+sudo autoconf
+sudo ./configure
+```
+
+refrence: https://askubuntu.com/questions/27677/cannot-find-install-sh-install-sh-or-shtool-in-ac-aux
