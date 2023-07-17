@@ -434,18 +434,6 @@
       return retCode;
    }
 
-    /* Parano tests. Will be removed eventually. */
-    if(
-            (VALUE_HANDLE_GET(outNbElement1) != VALUE_HANDLE_GET(outNbElement2)) ||
-            (VALUE_HANDLE_GET(outNbElement1) != (endIdx-startIdx)+1+lookbackSignal) )
-    {
-        VALUE_HANDLE_DEREF_TO_ZERO(outBegIdx);
-        VALUE_HANDLE_DEREF_TO_ZERO(outNBElement);
-        ARRAY_FREE( fastMABuffer );
-        ARRAY_FREE( slowMABuffer );
-        return TA_INTERNAL_ERROR(119);
-    }
-
    /* Calculate (fast MA) - (slow MA). */
    int fastEMAStartIdx = lookbackTotal - fastEMALookback;
    int slowEMAStartIdx = lookbackTotal - slowEMALookback;
