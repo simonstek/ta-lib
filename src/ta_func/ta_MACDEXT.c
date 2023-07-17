@@ -435,9 +435,7 @@
    }
 
    /* Parano tests. Will be removed eventually. */
-    tempInteger = startIdx-lookbackSignal;
-   if( (VALUE_HANDLE_GET(outBegIdx1) != tempInteger) ||
-       (VALUE_HANDLE_GET(outBegIdx2) != tempInteger) ||
+   if(
        (VALUE_HANDLE_GET(outNbElement1) != VALUE_HANDLE_GET(outNbElement2)) ||
        (VALUE_HANDLE_GET(outNbElement1) != (endIdx-startIdx)+1+lookbackSignal) )
    {
