@@ -451,7 +451,7 @@
 
    /* Calculate the signal/trigger line. */
    retCode = FUNCTION_CALL(MA)( 0, MASize - 1,
-                                       fastMABuffer, optInSignalPeriod, optInSignalMAType,
+                                       outMACD, optInSignalPeriod, optInSignalMAType,
                                        VALUE_HANDLE_OUT(outBegIdx2), VALUE_HANDLE_OUT(outNbElement2), outMACDSignal );
 
    ARRAY_FREE( fastMABuffer );
