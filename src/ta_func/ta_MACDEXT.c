@@ -450,7 +450,7 @@
    ARRAY_MEMMOVE( outMACD, 0, fastMABuffer, 0, MASize );
 
    /* Calculate the signal/trigger line. */
-   retCode = FUNCTION_CALL_DOUBLE(MA)( 0, MASize,
+   retCode = FUNCTION_CALL_DOUBLE(MA)( 0, MASize - 1,
                                        fastMABuffer, optInSignalPeriod, optInSignalMAType,
                                        VALUE_HANDLE_OUT(outBegIdx2), VALUE_HANDLE_OUT(outNbElement2), outMACDSignal );
 
