@@ -152,10 +152,10 @@
    /* insert lookback code here. */
 
    /* Find the MA with the largest lookback */
-   lookbackLargest = LOOKBACK_CALL(MA)( optInFastPeriod, optInFastMAType );
-   tempInteger     = LOOKBACK_CALL(MA)( optInSlowPeriod, optInSlowMAType );
-   if( tempInteger > lookbackLargest )
-      lookbackLargest = tempInteger;
+   int fastEMALookback = LOOKBACK_CALL(MA)( optInFastPeriod, optInFastMAType );
+   int slowEMALookback = LOOKBACK_CALL(MA)( optInSlowPeriod, optInSlowMAType );
+   lookbackLargest = fastEMALookback > slowEMALookback ? fastEMALookback : slowEMALookback;
+   tempInteger  = lookbackLargest;
 
    /* Add to the largest MA lookback the signal line lookback */
    return lookbackLargest + LOOKBACK_CALL(MA)( optInSignalPeriod, optInSignalMAType );
@@ -352,10 +352,10 @@
    }
 
    /* Find the MA with the largest lookback */
-   lookbackLargest = LOOKBACK_CALL(MA)( optInFastPeriod, optInFastMAType );
-   tempInteger     = LOOKBACK_CALL(MA)( optInSlowPeriod, optInSlowMAType );
-   if( tempInteger > lookbackLargest )
-      lookbackLargest = tempInteger;
+   int fastEMALookback = LOOKBACK_CALL(MA)( optInFastPeriod, optInFastMAType );
+   int slowEMALookback = LOOKBACK_CALL(MA)( optInSlowPeriod, optInSlowMAType );
+   lookbackLargest = fastEMALookback > slowEMALookback ? fastEMALookback : slowEMALookback;
+   tempInteger = lookbackLargest;
 
    /* Add the lookback needed for the signal line */
    lookbackSignal = LOOKBACK_CALL(MA)( optInSignalPeriod, optInSignalMAType ); 
@@ -405,8 +405,7 @@
     * signal calculation is done, all the output
     * will start at the requested 'startIdx'.
     */
-   tempInteger = startIdx-lookbackSignal;
-   retCode = FUNCTION_CALL(MA)( tempInteger, endIdx,
+   retCode = FUNCTION_CALL(MA)( 0, endIdx,
                                 inReal, optInSlowPeriod, optInSlowMAType,
                                 VALUE_HANDLE_OUT(outBegIdx1), VALUE_HANDLE_OUT(outNbElement1), 
 							    slowMABuffer );
@@ -421,7 +420,7 @@
    }
 
    /* Calculate the fast MA. */
-   retCode = FUNCTION_CALL(MA)( tempInteger, endIdx,
+   retCode = FUNCTION_CALL(MA)( 0, endIdx,
                                 inReal, optInFastPeriod, optInFastMAType,
                                 VALUE_HANDLE_OUT(outBegIdx2), VALUE_HANDLE_OUT(outNbElement2),
 							    fastMABuffer );
@@ -436,8 +435,8 @@
    }
 
    /* Parano tests. Will be removed eventually. */
-   if( (VALUE_HANDLE_GET(outBegIdx1) != tempInteger) || 
-       (VALUE_HANDLE_GET(outBegIdx2) != tempInteger) || 
+   if( (VALUE_HANDLE_GET(outBegIdx1) != fastEMAStartIdx) ||
+       (VALUE_HANDLE_GET(outBegIdx2) != slowEMAStartIdx) ||
        (VALUE_HANDLE_GET(outNbElement1) != VALUE_HANDLE_GET(outNbElement2)) ||
        (VALUE_HANDLE_GET(outNbElement1) != (endIdx-startIdx)+1+lookbackSignal) )
    {
@@ -449,8 +448,14 @@
    }
 
    /* Calculate (fast MA) - (slow MA). */
-   for( i=0; i < VALUE_HANDLE_GET(outNbElement1); i++ )
-      fastMABuffer[i] = fastMABuffer[i] - slowMABuffer[i];
+   int fastEMAStartIdx = slowEMALookback - lookbackSignal;
+   int slowEMAStartIdx = fastEMALookback - lookbackSignal;
+   int largerIdx = fastEMAStartIdx > slowEMAStartIdx ? fastEMAStartIdx : slowEMAStartIdx;
+   int outNbLen = outNbElement1 - largerIdx;
+   for( i=fastEMAStartIdx, j = slowEMAStartIdx, k = lookbackLargest + lookbackSignal; i < outNbLen && j < outNbLen && k < outNbLen; i++, j++ )
+   {
+       fastMABuffer[k] = fastMABuffer[i] - slowMABuffer[j];
+   }
 
    /* Copy the result into the output for the caller. */
    ARRAY_MEMMOVE( outMACD, 0, fastMABuffer, lookbackSignal, (endIdx-startIdx)+1 );
