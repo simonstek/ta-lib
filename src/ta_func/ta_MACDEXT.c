@@ -450,7 +450,7 @@
    ARRAY_MEMMOVE( outMACD, 0, fastMABuffer, 0, MASize );
 
    /* Calculate the signal/trigger line. */
-   retCode = FUNCTION_CALL_DOUBLE(MA)( 0, VALUE_HANDLE_GET(outNbElement1)-1,
+   retCode = FUNCTION_CALL_DOUBLE(MA)( 0, MASize,
                                        fastMABuffer, optInSignalPeriod, optInSignalMAType,
                                        VALUE_HANDLE_OUT(outBegIdx2), VALUE_HANDLE_OUT(outNbElement2), outMACDSignal );
 
@@ -469,8 +469,8 @@
       outMACDHist[i] = outMACD[i]-outMACDSignal[i];
 
    /* All done! Indicate the output limits and return success. */
-   VALUE_HANDLE_DEREF(outBegIdx)     = lookbackLargest;
-   VALUE_HANDLE_DEREF(outNBElement)  = VALUE_HANDLE_GET(outNbElement2);
+   VALUE_HANDLE_DEREF(outBegIdx)     = 0;
+   VALUE_HANDLE_DEREF(outNBElement)  = MASize;
 
    return ENUM_VALUE(RetCode,TA_SUCCESS,Success);
 }
