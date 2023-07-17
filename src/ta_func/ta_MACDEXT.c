@@ -377,7 +377,8 @@
 
    /* Allocate intermediate buffer for fast/slow MA. */
    tempInteger = (endIdx-startIdx)+1+lookbackSignal;
-   ARRAY_ALLOC( fastMABuffer, tempInteger );
+   int MASize = tempInteger;
+   ARRAY_ALLOC( fastMABuffer, MASize );
    #if !defined( _JAVA )
       if( !fastMABuffer )
       {
@@ -387,7 +388,7 @@
       }
    #endif
 
-   ARRAY_ALLOC( slowMABuffer, tempInteger );
+   ARRAY_ALLOC( slowMABuffer, MASize );
    #if !defined( _JAVA )
       if( !slowMABuffer )
       { 
@@ -420,7 +421,7 @@
       return retCode;
    }
     /* move to zero index. */
-    ARRAY_MEMMOVE( slowMABuffer, 0, slowMABuffer, lookbackTotal - outBegIdx1, endIdx - lookbackLargest + 1 );
+    ARRAY_MEMMOVE( slowMABuffer, 0, slowMABuffer, lookbackTotal - outBegIdx1, MASize );
 
    /* Calculate the fast MA. */
    retCode = FUNCTION_CALL(MA)( 0, endIdx - lookbackLargest,
@@ -437,16 +438,16 @@
       return retCode;
    }
     /* move to zero index. */
-    ARRAY_MEMMOVE( fastMABuffer, 0, fastMABuffer, lookbackTotal - outBegIdx2, endIdx - lookbackLargest + 1 );
+    ARRAY_MEMMOVE( fastMABuffer, 0, fastMABuffer, lookbackTotal - outBegIdx2, MASize );
 
    /* Calculate (fast MA) - (slow MA). */
-   for( i = 0; i < VALUE_HANDLE_GET(outNbElement1); i++ )
+   for( i = 0; i < MASize; i++ )
    {
        fastMABuffer[i] = fastMABuffer[i] - slowMABuffer[i];
    }
 
    /* Copy the result into the output for the caller. */
-   ARRAY_MEMMOVE( outMACD, 0, fastMABuffer, lookbackSignal, (endIdx-startIdx)+1 );
+   ARRAY_MEMMOVE( outMACD, 0, fastMABuffer, 0, MASize );
 
    /* Calculate the signal/trigger line. */
    retCode = FUNCTION_CALL_DOUBLE(MA)( 0, VALUE_HANDLE_GET(outNbElement1)-1,
