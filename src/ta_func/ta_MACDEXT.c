@@ -436,13 +436,9 @@
    }
 
    /* Calculate (fast MA) - (slow MA). */
-   int fastEMAStartIdx = lookbackTotal - fastEMALookback;
-   int slowEMAStartIdx = lookbackTotal - slowEMALookback;
-   int largerIdx = fastEMAStartIdx > slowEMAStartIdx ? fastEMAStartIdx : slowEMAStartIdx;
-   int outNbLen = outNbElement1 - largerIdx;
-   for( i=fastEMAStartIdx, j = slowEMAStartIdx, k = lookbackTotal; i < outNbLen && j < outNbLen && k < outNbLen; i++, j++, k++ )
+   for( i = 0; i < VALUE_HANDLE_GET(outNbElement1); i++ )
    {
-       fastMABuffer[k] = fastMABuffer[i] - slowMABuffer[j];
+       fastMABuffer[i] = fastMABuffer[i] - slowMABuffer[i];
    }
 
    /* Copy the result into the output for the caller. */
@@ -468,7 +464,7 @@
       outMACDHist[i] = outMACD[i]-outMACDSignal[i];
 
    /* All done! Indicate the output limits and return success. */
-   VALUE_HANDLE_DEREF(outBegIdx)     = startIdx;
+   VALUE_HANDLE_DEREF(outBegIdx)     = lookbackLargest;
    VALUE_HANDLE_DEREF(outNBElement)  = VALUE_HANDLE_GET(outNbElement2);
 
    return ENUM_VALUE(RetCode,TA_SUCCESS,Success);
