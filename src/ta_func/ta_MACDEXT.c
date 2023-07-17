@@ -264,7 +264,7 @@
    VALUE_HANDLE_INT(outBegIdx2);
    VALUE_HANDLE_INT(outNbElement2);
    int lookbackTotal, lookbackSignal, lookbackLargest;
-   int i;
+   int i, j, k;
    ENUM_DECLARATION(MAType) tempMAType;
 
 /**** START GENCODE SECTION 4 - DO NOT DELETE THIS LINE ****/
@@ -453,7 +453,7 @@
    int slowEMAStartIdx = fastEMALookback - lookbackSignal;
    int largerIdx = fastEMAStartIdx > slowEMAStartIdx ? fastEMAStartIdx : slowEMAStartIdx;
    int outNbLen = outNbElement1 - largerIdx;
-   for( i=fastEMAStartIdx, j = slowEMAStartIdx, k = lookbackLargest + lookbackSignal; i < outNbLen && j < outNbLen && k < outNbLen; i++, j++ )
+   for( i=fastEMAStartIdx, j = slowEMAStartIdx, k = lookbackLargest + lookbackSignal; i < outNbLen && j < outNbLen && k < outNbLen; i++, j++, k++ )
    {
        fastMABuffer[k] = fastMABuffer[i] - slowMABuffer[j];
    }
