@@ -420,7 +420,7 @@
       return retCode;
    }
     /* move to zero index. */
-    ARRAY_MEMMOVE( fastMABuffer, 0, fastMABuffer, outBegIdx1, endIdx - lookbackLargest );
+    ARRAY_MEMMOVE( slowMABuffer, 0, slowMABuffer, outBegIdx1, endIdx - lookbackLargest );
 
    /* Calculate the fast MA. */
    retCode = FUNCTION_CALL(MA)( 0, endIdx - lookbackLargest,
@@ -437,7 +437,7 @@
       return retCode;
    }
     /* move to zero index. */
-    ARRAY_MEMMOVE( slowMABuffer, 0, slowMABuffer, outBegIdx2, endIdx - lookbackLargest );
+    ARRAY_MEMMOVE( fastMABuffer, 0, fastMABuffer, outBegIdx2, endIdx - lookbackLargest );
 
    /* Calculate (fast MA) - (slow MA). */
    for( i = 0; i < VALUE_HANDLE_GET(outNbElement1); i++ )
