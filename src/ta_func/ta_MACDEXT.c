@@ -406,7 +406,7 @@
     * will start at the requested 'startIdx'.
     */
     tempInteger = startIdx-lookbackSignal;
-   retCode = FUNCTION_CALL(MA)( slowEMALookback, endIdx,
+   retCode = FUNCTION_CALL(MA)( slowEMALookback, endIdx - slowEMALookback,
                                 inReal, optInSlowPeriod, optInSlowMAType,
                                 VALUE_HANDLE_OUT(outBegIdx1), VALUE_HANDLE_OUT(outNbElement1), 
 							    slowMABuffer );
