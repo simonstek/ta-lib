@@ -421,7 +421,7 @@
    }
 
    /* Calculate the fast MA. */
-   retCode = FUNCTION_CALL(MA)( fastEMALookback, endIdx - fastEMALookback,
+   retCode = FUNCTION_CALL(MA)( fastEMALookback, endIdx - slowEMALookback,
                                 inReal, optInFastPeriod, optInFastMAType,
                                 VALUE_HANDLE_OUT(outBegIdx2), VALUE_HANDLE_OUT(outNbElement2),
 							    fastMABuffer );
