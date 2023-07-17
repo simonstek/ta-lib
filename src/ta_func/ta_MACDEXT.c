@@ -406,7 +406,7 @@
     * will start at the requested 'startIdx'.
     */
     tempInteger = startIdx-lookbackSignal;
-   retCode = FUNCTION_CALL(MA)( lookbackLargest, endIdx,
+   retCode = FUNCTION_CALL(MA)( 0, endIdx - lookbackLargest,
                                 inReal, optInSlowPeriod, optInSlowMAType,
                                 VALUE_HANDLE_OUT(outBegIdx1), VALUE_HANDLE_OUT(outNbElement1), 
 							    slowMABuffer );
@@ -419,9 +419,11 @@
       ARRAY_FREE( slowMABuffer );
       return retCode;
    }
+    /* move to zero index. */
+    ARRAY_MEMMOVE( fastMABuffer, 0, fastMABuffer, outBegIdx1, endIdx - lookbackLargest );
 
    /* Calculate the fast MA. */
-   retCode = FUNCTION_CALL(MA)( lookbackLargest, endIdx,
+   retCode = FUNCTION_CALL(MA)( 0, endIdx - lookbackLargest,
                                 inReal, optInFastPeriod, optInFastMAType,
                                 VALUE_HANDLE_OUT(outBegIdx2), VALUE_HANDLE_OUT(outNbElement2),
 							    fastMABuffer );
@@ -434,6 +436,8 @@
       ARRAY_FREE( slowMABuffer );
       return retCode;
    }
+    /* move to zero index. */
+    ARRAY_MEMMOVE( slowMABuffer, 0, slowMABuffer, outBegIdx2, endIdx - lookbackLargest );
 
    /* Calculate (fast MA) - (slow MA). */
    for( i = 0; i < VALUE_HANDLE_GET(outNbElement1); i++ )
