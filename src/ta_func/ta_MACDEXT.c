@@ -435,11 +435,11 @@
    }
 
    /* Calculate (fast MA) - (slow MA). */
-   int fastEMAStartIdx = slowEMALookback - lookbackSignal;
-   int slowEMAStartIdx = fastEMALookback - lookbackSignal;
+   int fastEMAStartIdx = lookbackTotal - fastEMALookback;
+   int slowEMAStartIdx = lookbackTotal - slowEMALookback;
    int largerIdx = fastEMAStartIdx > slowEMAStartIdx ? fastEMAStartIdx : slowEMAStartIdx;
    int outNbLen = outNbElement1 - largerIdx;
-   for( i=fastEMAStartIdx, j = slowEMAStartIdx, k = lookbackLargest + lookbackSignal; i < outNbLen && j < outNbLen && k < outNbLen; i++, j++, k++ )
+   for( i=fastEMAStartIdx, j = slowEMAStartIdx, k = lookbackTotal; i < outNbLen && j < outNbLen && k < outNbLen; i++, j++, k++ )
    {
        fastMABuffer[k] = fastMABuffer[i] - slowMABuffer[j];
    }
