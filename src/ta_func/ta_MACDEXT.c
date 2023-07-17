@@ -406,7 +406,7 @@
     * will start at the requested 'startIdx'.
     */
     tempInteger = startIdx-lookbackSignal;
-   retCode = FUNCTION_CALL(MA)( slowEMALookback, endIdx - slowEMALookback,
+   retCode = FUNCTION_CALL(MA)( 0, endIdx - slowEMALookback,
                                 inReal, optInSlowPeriod, optInSlowMAType,
                                 VALUE_HANDLE_OUT(outBegIdx1), VALUE_HANDLE_OUT(outNbElement1), 
 							    slowMABuffer );
@@ -421,7 +421,7 @@
    }
 
    /* Calculate the fast MA. */
-   retCode = FUNCTION_CALL(MA)( fastEMALookback, endIdx - slowEMALookback,
+   retCode = FUNCTION_CALL(MA)( 0, endIdx - slowEMALookback,
                                 inReal, optInFastPeriod, optInFastMAType,
                                 VALUE_HANDLE_OUT(outBegIdx2), VALUE_HANDLE_OUT(outNbElement2),
 							    fastMABuffer );
